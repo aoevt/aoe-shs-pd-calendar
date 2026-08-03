@@ -28,9 +28,22 @@ import recurring_ical_events
 
 # Program areas are assigned colors in first-seen order from this palette.
 # To pin a category to a specific color permanently, add it to PINNED below.
+# Prefixes stripped from category names before display (Outlook keeps the
+# namespaced name, e.g. "SHS - BTA"; the website shows "BTA").
+STRIP_PREFIXES = ["SHS - ", "SHS-"]
+
 PALETTE = ["#007834", "#6e2c8e", "#00629b", "#9c3d00", "#4d5d2c", "#8a1e41", "#4a4a4a", "#00575c"]
+# Overflow colors for categories not pinned below (all pass 4.5:1 with white text)
+OVERFLOW = ["#205493", "#5b3256", "#254441", "#6b3f00", "#5c5c5c"]
 PINNED = {
-    # "Behavioral Threat Assessment": "#007834",
+    "BTA": "#007834",
+    "HHB": "#6e2c8e",
+    "McKinney-Vento": "#00629b",
+    "Rule 4500": "#9c3d00",
+    "Foster Care": "#4d5d2c",
+    "Universal Screening": "#8a1e41",
+    "School Safety": "#4a4a4a",
+    "Discipline": "#00575c",
 }
 
 WINDOW_PAST_DAYS = 60       # keep this many days of past sessions (widget hides them by default)
@@ -97,10 +110,17 @@ def main():
 
     def program_key(name: str) -> str:
         nonlocal colors_used
+        for pre in STRIP_PREFIXES:
+            if name.lower().startswith(pre.lower()):
+                name = name[len(pre):].strip()
+                break
         key = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or "general"
         if key not in programs:
-            color = PINNED.get(name) or PALETTE[colors_used % len(PALETTE)]
-            if not PINNED.get(name):
+            if name in PINNED:
+                color = PINNED[name]
+            else:
+                available = [c for c in PALETTE + OVERFLOW if c not in PINNED.values()] or OVERFLOW
+                color = available[colors_used % len(available)]
                 colors_used += 1
             label = name if len(name) <= 16 else name  # full name; widget sizes tags to fit
             programs[key] = {"label": label, "name": name, "color": color}
