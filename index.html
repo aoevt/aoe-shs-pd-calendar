@@ -187,7 +187,8 @@ function renderList() {
 function actionHTML(s) {
   if (s.action === "reg" || s.action === "details") {
     const prefix = s.action === "details" ? "Details: " : "";
-    return '<p class="action">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a></p>';
+    const note = s.noteText ? " \u00b7 " + esc(s.noteText) : "";
+    return '<p class="action">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a>' + note + '</p>';
   }
   return s.noteText ? '<p class="action">' + esc(s.noteText) + '</p>' : "";
 }
