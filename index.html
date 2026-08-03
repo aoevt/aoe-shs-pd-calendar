@@ -20,74 +20,80 @@
   /* Toolbar: flat squared controls */
   .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 0 0 14px; }
   .view-toggle { display: flex; border: 2px solid #003300; }
-  .view-toggle button { font-size: .8rem; font-weight: 700; letter-spacing: .02em; padding: 8px 20px; border: none; background: #fff; color: #003300; cursor: pointer; }
+  .view-toggle button { font-size: 1rem; font-weight: 700; letter-spacing: .02em; padding: 8px 20px; border: none; background: #fff; color: #003300; cursor: pointer; }
   .view-toggle button + button { border-left: 2px solid #003300; }
   .view-toggle button[aria-pressed="true"] { background: #003300; color: #fff; }
   .month-nav { display: flex; gap: 8px; align-items: center; }
   .month-nav[hidden] { display: none; }
-  .month-nav button { font-size: .8rem; font-weight: 700; padding: 8px 14px; border: 2px solid #003300; background: #fff; color: #003300; cursor: pointer; }
+  .month-nav button { font-size: 1rem; font-weight: 700; padding: 8px 14px; border: 2px solid #003300; background: #fff; color: #003300; cursor: pointer; }
   .month-nav button:hover { background: #eaf5ed; }
-  .month-title { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.1rem; font-weight: 800; color: #1b1b1b; min-width: 170px; text-align: center; }
+  .month-title { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.25rem; font-weight: 800; color: #1b1b1b; min-width: 170px; text-align: center; }
 
   /* Filters: flat text buttons with color swatches, underline = active */
   .filters { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 4px; border-bottom: 1px solid #d9d6d0; padding-bottom: 10px; }
-  .filters button { display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; font-weight: 600; padding: 5px 2px; border: none; background: none; color: #3d4551; cursor: pointer; border-bottom: 3px solid transparent; }
+  .filters button { display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 600; padding: 5px 2px; border: none; background: none; color: #3d4551; cursor: pointer; border-bottom: 3px solid transparent; }
   .filters button:hover { color: #1b1b1b; }
   .filters button[aria-pressed="true"] { color: #1b1b1b; font-weight: 700; border-bottom-color: #007834; }
   .fswatch { width: 10px; height: 10px; display: inline-block; flex: none; }
-  .filter-note { font-size: .76rem; color: #6f6f6f; margin: 8px 0 20px; }
+  .filter-note { font-size: 1rem; color: #6f6f6f; margin: 8px 0 20px; }
 
   /* Month labels: typographic */
-  .month-label { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.05rem; font-weight: 800; letter-spacing: .01em; color: #1b1b1b; text-transform: none; margin: 28px 0 0; padding-bottom: 6px; border-bottom: 3px solid #003300; display: block; }
+  .month-label { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.25rem; font-weight: 800; letter-spacing: .01em; color: #1b1b1b; text-transform: none; margin: 28px 0 0; padding-bottom: 6px; border-bottom: 3px solid #003300; display: block; }
   .month-label:first-of-type { margin-top: 0; }
 
   /* Sessions: ruled editorial rows */
   .session { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid #d9d6d0; margin: 0; }
   .badge { flex: 0 0 64px; text-align: left; padding-top: 2px; }
-  .badge .mo { display: block; font-size: .66rem; font-weight: 700; letter-spacing: .14em; color: #007834; text-transform: uppercase; line-height: 1.2; }
-  .badge .day { display: block; font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.85rem; font-weight: 800; color: #1b1b1b; line-height: 1.05; }
+  .badge .mo { display: block; font-size: 1rem; font-weight: 700; letter-spacing: .08em; color: #007834; text-transform: uppercase; line-height: 1.2; }
+  .badge .day { display: block; font-family: "Libre Franklin", Arial, sans-serif; font-size: 2rem; font-weight: 800; color: #1b1b1b; line-height: 1.05; }
   .badge.recurring .mo { color: #6e5715; }
-  .badge.recurring .day { font-size: .74rem; font-weight: 700; color: #1b1b1b; text-transform: uppercase; letter-spacing: .1em; padding-top: 4px; font-family: "Public Sans", Arial, sans-serif; }
+  .badge.recurring .day { font-size: 1rem; font-weight: 700; color: #1b1b1b; text-transform: uppercase; letter-spacing: .1em; padding-top: 4px; font-family: "Public Sans", Arial, sans-serif; }
   .info { flex: 1; min-width: 0; }
-  h3.title { font-family: "Libre Franklin", Arial, sans-serif; font-weight: 700; font-size: 1.02rem; line-height: 1.35; margin: 0 0 5px; color: #1b1b1b; }
-  .ptag { display: inline-flex; align-items: center; gap: 6px; font-family: "Public Sans", Arial, sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3d4551; margin: 0 0 3px; }
+  h3.title { font-family: "Libre Franklin", Arial, sans-serif; font-weight: 700; font-size: 1.15rem; line-height: 1.35; margin: 0 0 5px; color: #1b1b1b; }
+  .ptag { display: inline-flex; align-items: center; gap: 8px; font-family: "Public Sans", Arial, sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #3d4551; margin: 0 0 3px; }
   .swatch { width: 10px; height: 10px; display: inline-block; flex: none; }
-  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 5px; }
-  .action { font-size: .85rem; margin: 0; font-weight: 600; }
-  .empty { font-size: .9rem; color: #3d4551; border-top: 3px solid #003300; border-bottom: 1px solid #d9d6d0; padding: 18px 0; }
-  .past-toggle { font-size: .8rem; margin: 16px 0 0; }
-  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; padding: 0; }
+  .meta { font-size: 1rem; color: #3d4551; margin: 0 0 5px; }
+  .fact { font-size: 1rem; color: #3d4551; margin: 0 0 4px; }
+  .fact strong { color: #1b1b1b; }
+  .action { font-size: 1rem; margin: 0; font-weight: 600; }
+  .empty { font-size: 1rem; color: #3d4551; border-top: 3px solid #003300; border-bottom: 1px solid #d9d6d0; padding: 18px 0; }
+  .past-toggle { font-size: 1rem; margin: 16px 0 0; }
+  .past-toggle button { font-size: 1rem; background: none; border: none; color: #005ea2; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; padding: 0; }
   .session.past { opacity: .55; }
 
   /* Month grid: flat, strong top rule */
   .cal-card { border-top: 3px solid #003300; }
   .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
   .cal caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .cal th { background: #fff; color: #1b1b1b; font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 10px 6px 8px; border-bottom: 1px solid #1b1b1b; text-align: left; }
-  .cal td { border-bottom: 1px solid #d9d6d0; border-right: 1px solid #eceae6; vertical-align: top; padding: 6px; height: 100px; background: #fff; }
+  .cal th { background: #fff; color: #1b1b1b; font-size: 1rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 10px 6px 8px; border-bottom: 1px solid #1b1b1b; text-align: left; }
+  .cal td { border-bottom: 1px solid #d9d6d0; border-right: 1px solid #eceae6; vertical-align: top; padding: 8px; height: 118px; overflow: visible; background: #fff; }
   .cal td:last-child { border-right: none; }
   .cal td.out { background: #faf9f7; }
   .cal td.today { box-shadow: inset 4px 0 0 #F5B324; background: #fffdf5; }
-  .daynum { font-family: "Libre Franklin", Arial, sans-serif; font-size: .88rem; font-weight: 800; color: #1b1b1b; margin: 0 0 5px; }
-  .cal td.out .daynum { color: #b0aea9; font-weight: 700; }
-  .today-flag { display: inline-block; font-family: "Public Sans", Arial, sans-serif; font-size: .56rem; font-weight: 700; letter-spacing: .12em; color: #6e5715; text-transform: uppercase; margin-left: 6px; vertical-align: 2px; }
-  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.3; color: #1b1b1b; background: #fff; border: none; border-left: 3px solid; padding: 2px 0 2px 7px; margin: 0 0 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .daynum { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.05rem; font-weight: 800; color: #1b1b1b; margin: 0 0 5px; }
+  .cal td.out .daynum { color: #6f6d68; font-weight: 700; }
+  .today-flag { display: inline-block; font-family: "Public Sans", Arial, sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .12em; color: #6e5715; text-transform: uppercase; margin-left: 6px; vertical-align: 2px; }
+  .chip { display: block; width: 100%; text-align: left; font-size: 1rem; font-weight: 700; line-height: 1.3; color: #1b1b1b; background: #fff; border: none; border-left: 3px solid; padding: 2px 0 2px 7px; margin: 0 0 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .chip:hover { text-decoration: underline; text-underline-offset: 2px; }
-  .more-link { font-size: .68rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0 0 0 10px; cursor: pointer; text-decoration: underline; }
+  .more-link { font-size: 1rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0 0 0 10px; cursor: pointer; text-decoration: underline; }
   .dot-row { display: flex; flex-wrap: wrap; gap: 3px; }
   .dot { width: 9px; height: 9px; display: inline-block; }
   .day-btn { display: block; width: 100%; background: none; border: none; padding: 0; text-align: left; cursor: pointer; }
 
-  /* Detail panel: established AOE callout, squared */
-  .detail { border-left: 4px solid #007834; background: #eaf5ed; padding: 16px 20px; margin: 16px 0 0; }
-  .detail[hidden] { display: none; }
-  .detail h2 { font-family: "Libre Franklin", Arial, sans-serif; margin: 0 0 6px; font-size: 1rem; color: #1b1b1b; }
-  .detail .ptag { margin-right: 8px; }
-  .detail p { margin: 3px 0; font-size: .88rem; }
-  .detail .close { float: right; font-size: .78rem; font-weight: 700; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+  /* Inline detail row: expands beneath the clicked week */
+  .detail-cell { padding: 0 !important; height: auto !important; border-right: none !important; }
+  .detail-box { border-left: 4px solid #007834; background: #eaf5ed; padding: 16px 20px; margin: 0; }
+  .detail-box h2 { font-family: "Libre Franklin", Arial, sans-serif; margin: 0 0 6px; font-size: 1.15rem; color: #1b1b1b; }
+  .detail-box .ptag { margin: 0 0 2px; }
+  .detail-box p { margin: 4px 0; font-size: 1rem; }
+  .detail-box .close { float: right; font-size: 1rem; font-weight: 700; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+  .detail-box .detail-date { font-family: "Libre Franklin", Arial, sans-serif; font-weight: 800; font-size: 1rem; color: #005a27; margin: 0 0 8px; }
+  .detail-box .detail-item + .detail-item { border-top: 1px solid #cfe6d6; margin-top: 12px; padding-top: 12px; }
+  .cal td.cell-open { box-shadow: inset 0 0 0 3px #007834; }
+  .cal td.today.cell-open { box-shadow: inset 0 0 0 3px #007834, inset 4px 0 0 #F5B324; }
 
   @media (max-width: 640px) {
-    .cal td { height: 64px; }
+    .cal td { height: 72px; }
     .chip { display: none; }
     .more-link { display: none; }
     .toolbar { justify-content: flex-start; }
@@ -97,6 +103,11 @@
   }
   @media (min-width: 641px) {
     .dot-row, .day-btn { display: none; }
+  }
+  @media (forced-colors: active) {
+    .swatch, .fswatch, .dot { border: 1px solid CanvasText; }
+    .chip { border-left-width: 3px; border-left-style: solid; }
+    .view-toggle button[aria-pressed="true"], .filters button[aria-pressed="true"] { outline: 2px solid CanvasText; outline-offset: -2px; }
   }
 </style>
 </head>
@@ -135,10 +146,6 @@
     </table>
     </div>
     <p class="empty" id="monthEmpty" role="status" hidden style="margin-top:10px;"></p>
-    <div class="detail" id="detail" hidden tabindex="-1" role="region" aria-label="Session details">
-      <button type="button" class="close" id="detailClose">Close</button>
-      <div id="detailBody"></div>
-    </div>
   </div>
 
 </div>
@@ -210,18 +217,25 @@ function renderList() {
       '<div class="info"><p class="ptag"><span class="swatch" style="background:' + prog.color + '"></span>' + esc(prog.label) + '</p>' +
       '<h3 class="title">' + esc(s.title) + '</h3>' +
       '<p class="meta">' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
-      actionHTML(s) + '</div>';
+      factsHTML(s) + actionHTML(s) + '</div>';
     list.appendChild(row);
   });
 }
 
+function factsHTML(s) {
+  let out = "";
+  if (s.audience) out += '<p class="fact"><strong>Audience:</strong> ' + esc(s.audience) + '</p>';
+  if (s.provider) out += '<p class="fact"><strong>Provider:</strong> ' + esc(s.provider) + '</p>';
+  return out;
+}
+
 function actionHTML(s) {
   if (s.action === "reg" || s.action === "details") {
-    const prefix = s.action === "details" ? "Details: " : "";
+    const prefix = s.action === "details" ? "<strong>Details:</strong> " : "<strong>Registration:</strong> ";
     const note = s.noteText ? " \u00b7 " + esc(s.noteText) : "";
-    return '<p class="action">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a>' + note + '</p>';
+    return '<p class="action fact">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a>' + note + '</p>';
   }
-  return s.noteText ? '<p class="action">' + esc(s.noteText) + '</p>' : "";
+  return s.noteText ? '<p class="action fact"><strong>Registration:</strong> ' + esc(s.noteText) + '</p>' : "";
 }
 
 function esc(t) { const d = document.createElement("div"); d.textContent = t == null ? "" : String(t); return d.innerHTML; }
@@ -248,6 +262,7 @@ function renderMonth() {
     emptyEl.hidden = true;
   }
 
+  detailOpener = null;
   const body = document.getElementById("calBody");
   body.innerHTML = "";
   const firstDow = new Date(y, m, 1).getDay();
@@ -285,15 +300,15 @@ function renderMonth() {
           chip.type = "button"; chip.className = "chip";
           chip.style.borderLeftColor = PROGRAMS[s.program].color;
           chip.textContent = s.title;
-          chip.setAttribute("aria-label", s.title + ", " + fullDate(cellDate) + ". View details.");
-          chip.addEventListener("click", () => showDetail([s], cellDate));
+          chip.setAttribute("aria-label", s.title + " (" + PROGRAMS[s.program].name + "), " + fullDate(cellDate) + ". View details.");
+          chip.addEventListener("click", () => showDetail([s], cellDate, td, chip));
           td.appendChild(chip);
         });
         if (items.length > MAX) {
           const more = document.createElement("button");
           more.type = "button"; more.className = "more-link";
           more.textContent = "+" + (items.length - MAX) + " more";
-          more.addEventListener("click", () => showDetail(items, cellDate));
+          more.addEventListener("click", () => showDetail(items, cellDate, td, more));
           td.appendChild(more);
         }
         if (items.length) {
@@ -307,7 +322,7 @@ function renderMonth() {
             dots.appendChild(dot);
           });
           dayBtn.appendChild(dots);
-          dayBtn.addEventListener("click", () => showDetail(items, cellDate));
+          dayBtn.addEventListener("click", () => showDetail(items, cellDate, td, dayBtn));
           td.appendChild(dayBtn);
         }
       }
@@ -317,21 +332,61 @@ function renderMonth() {
   }
 }
 
-function showDetail(items, d) {
-  const box = document.getElementById("detail");
-  const bodyEl = document.getElementById("detailBody");
-  bodyEl.innerHTML = "";
+let detailOpener = null;
+
+function closeDetail(restoreFocus) {
+  const row = document.getElementById("detailRow");
+  if (row) row.remove();
+  document.querySelectorAll(".cal td.cell-open").forEach(td => td.classList.remove("cell-open"));
+  if (restoreFocus && detailOpener && document.contains(detailOpener)) detailOpener.focus();
+  detailOpener = null;
+}
+
+function showDetail(items, d, cell, opener) {
+  closeDetail(false);
+  detailOpener = opener || null;
+  if (cell) cell.classList.add("cell-open");
+
+  const row = document.createElement("tr");
+  row.id = "detailRow";
+  const td = document.createElement("td");
+  td.colSpan = 7;
+  td.className = "detail-cell";
+
+  const box = document.createElement("div");
+  box.className = "detail-box";
+  box.tabIndex = -1;
+  box.setAttribute("role", "region");
+  box.setAttribute("aria-label", "Session details for " + fullDate(d));
+
+  const close = document.createElement("button");
+  close.type = "button"; close.className = "close"; close.textContent = "Close";
+  close.addEventListener("click", () => closeDetail(true));
+  box.appendChild(close);
+
+  const dateLine = document.createElement("p");
+  dateLine.className = "detail-date";
+  dateLine.textContent = fullDate(d);
+  box.appendChild(dateLine);
+
   items.forEach(s => {
     const prog = PROGRAMS[s.program];
     const block = document.createElement("div");
+    block.className = "detail-item";
     block.innerHTML =
       '<p class="ptag"><span class="swatch" style="background:' + prog.color + '"></span>' + esc(prog.label) + '</p>' +
       '<h2>' + esc(s.title) + '</h2>' +
-      '<p>' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
-      actionHTML(s);
-    bodyEl.appendChild(block);
+      '<p>' + (s.meta ? esc(s.meta) : "") + '</p>' +
+      factsHTML(s) + actionHTML(s);
+    box.appendChild(block);
   });
-  box.hidden = false;
+
+  td.appendChild(box);
+  row.appendChild(td);
+  const weekRow = cell ? cell.parentNode : null;
+  if (weekRow && weekRow.parentNode) {
+    weekRow.parentNode.insertBefore(row, weekRow.nextSibling);
+  }
   box.focus();
 }
 
@@ -355,12 +410,11 @@ function render() {
 
 document.getElementById("viewList").addEventListener("click", () => setView("list"));
 document.getElementById("viewMonth").addEventListener("click", () => setView("month"));
-document.getElementById("prevBtn").addEventListener("click", () => { current.setMonth(current.getMonth()-1); document.getElementById("detail").hidden = true; renderMonth(); });
-document.getElementById("nextBtn").addEventListener("click", () => { current.setMonth(current.getMonth()+1); document.getElementById("detail").hidden = true; renderMonth(); });
-document.getElementById("todayBtn").addEventListener("click", () => { current = new Date(); current.setDate(1); current.setHours(0,0,0,0); document.getElementById("detail").hidden = true; renderMonth(); });
-document.getElementById("detailClose").addEventListener("click", () => { document.getElementById("detail").hidden = true; });
-document.getElementById("detail").addEventListener("keydown", (e) => {
-  if (e.key === "Escape") document.getElementById("detail").hidden = true;
+document.getElementById("prevBtn").addEventListener("click", () => { current.setMonth(current.getMonth()-1); renderMonth(); });
+document.getElementById("nextBtn").addEventListener("click", () => { current.setMonth(current.getMonth()+1); renderMonth(); });
+document.getElementById("todayBtn").addEventListener("click", () => { current = new Date(); current.setDate(1); current.setHours(0,0,0,0); renderMonth(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.getElementById("detailRow")) closeDetail(true);
 });
 document.getElementById("pastBtn").addEventListener("click", function() {
   showPast = !showPast;
