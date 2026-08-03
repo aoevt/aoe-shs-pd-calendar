@@ -68,14 +68,14 @@ def text_of(component, key, default=""):
 
 def parse_description(desc: str):
     """Pull Audience:/Register:/Details: lines out of the event body."""
-    out = {"audience": "", "register": "", "details": "", "category": ""}
+    out = {"audience": "", "register": "", "details": "", "category": "", "provider": "", "join": ""}
     if not desc:
         return out
     # Outlook bodies arrive with literal \n sequences and carriage returns
     desc = desc.replace("\\n", "\n").replace("\r", "")
     for line in desc.split("\n"):
         line = line.strip()
-        m = re.match(r"(?i)^(audience|register|details|category)\s*:\s*(.+)$", line)
+        m = re.match(r"(?i)^(audience|register|details|category|provider|join)\s*:\s*(.+)$", line)
         if m:
             out[m.group(1).lower()] = m.group(2).strip()
     return out
@@ -161,7 +161,7 @@ def main():
         loc_str = "Virtual" if (not location or "virtual" in location.lower()
                                 or "teams" in location.lower() or "zoom" in location.lower()) else location
 
-        meta_parts = [p for p in [time_str, loc_str, body["audience"]] if p]
+        meta_parts = [p for p in [time_str, loc_str, body["audience"], body["provider"]] if p]
 
         session = {
             "date": d.isoformat(),
@@ -175,6 +175,12 @@ def main():
             session["action"] = "reg"
             session["url"] = reg
             session["linkText"] = "Register"
+        elif body["join"].lower().startswith("http"):
+            session["action"] = "reg"
+            session["url"] = body["join"]
+            session["linkText"] = "Join the session"
+            if reg:
+                session["noteText"] = reg
         elif body["details"].lower().startswith("http"):
             session["action"] = "details"
             session["url"] = body["details"]
