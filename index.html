@@ -4,96 +4,99 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Safe and Healthy Schools Professional Learning Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@700;800;900&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   html, body { background: transparent; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-  body { margin: 0; font-family: "Public Sans", "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; line-height: 1.5; padding: 4px 2px 12px; }
-  .wrap { max-width: 960px; }
-  a { color: #005ea2; }
+  body { margin: 0; font-family: "Public Sans", Arial, sans-serif; color: #1b1b1b; line-height: 1.5; padding: 2px 2px 16px; }
+  .wrap { width: 100%; }
+  a { color: #005ea2; text-underline-offset: 2px; }
   button { font-family: inherit; }
   button:focus-visible, a:focus-visible { outline: 3px solid #005ea2; outline-offset: 2px; }
 
-  /* Toolbar */
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 0 0 12px; }
-  .view-toggle { display: flex; border: 1.5px solid #007834; border-radius: 8px; overflow: hidden; background: #fff; }
-  .view-toggle button { font-size: .85rem; font-weight: 700; padding: 8px 20px; border: none; background: #fff; color: #005a27; cursor: pointer; }
-  .view-toggle button + button { border-left: 1.5px solid #007834; }
-  .view-toggle button[aria-pressed="true"] { background: #007834; color: #fff; }
-  .month-nav { display: flex; gap: 6px; align-items: center; }
+  /* Toolbar: flat squared controls */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 0 0 14px; }
+  .view-toggle { display: flex; border: 2px solid #003300; }
+  .view-toggle button { font-size: .8rem; font-weight: 700; letter-spacing: .02em; padding: 8px 20px; border: none; background: #fff; color: #003300; cursor: pointer; }
+  .view-toggle button + button { border-left: 2px solid #003300; }
+  .view-toggle button[aria-pressed="true"] { background: #003300; color: #fff; }
+  .month-nav { display: flex; gap: 8px; align-items: center; }
   .month-nav[hidden] { display: none; }
-  .month-nav button { font-size: .85rem; font-weight: 700; padding: 8px 14px; border: 1.5px solid #007834; border-radius: 8px; background: #fff; color: #005a27; cursor: pointer; }
+  .month-nav button { font-size: .8rem; font-weight: 700; padding: 8px 14px; border: 2px solid #003300; background: #fff; color: #003300; cursor: pointer; }
   .month-nav button:hover { background: #eaf5ed; }
-  .month-title { font-size: 1.1rem; font-weight: 800; color: #003300; min-width: 168px; text-align: center; }
+  .month-title { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.1rem; font-weight: 800; color: #1b1b1b; min-width: 170px; text-align: center; }
 
-  /* Filter pills */
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
-  .filters button { font-size: .8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
-  .filters button:hover { background: #eaf5ed; }
-  .filters button[aria-pressed="true"] { background: #007834; color: #fff; }
-  .filter-note { font-size: .78rem; color: #4a4a4a; margin: 0 0 16px; }
+  /* Filters: flat text buttons with color swatches, underline = active */
+  .filters { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 4px; border-bottom: 1px solid #d9d6d0; padding-bottom: 10px; }
+  .filters button { display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; font-weight: 600; padding: 5px 2px; border: none; background: none; color: #3d4551; cursor: pointer; border-bottom: 3px solid transparent; }
+  .filters button:hover { color: #1b1b1b; }
+  .filters button[aria-pressed="true"] { color: #1b1b1b; font-weight: 700; border-bottom-color: #007834; }
+  .fswatch { width: 10px; height: 10px; display: inline-block; flex: none; }
+  .filter-note { font-size: .76rem; color: #6f6f6f; margin: 8px 0 20px; }
 
-  /* Month labels */
-  .month-label { font-size: .8rem; font-weight: 800; letter-spacing: .1em; color: #005a27; text-transform: uppercase; margin: 24px 0 10px; border-bottom: 2px solid #F5B324; display: inline-block; padding-bottom: 2px; }
-  .month-label:first-of-type { margin-top: 4px; }
+  /* Month labels: typographic */
+  .month-label { font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.05rem; font-weight: 800; letter-spacing: .01em; color: #1b1b1b; text-transform: none; margin: 28px 0 0; padding-bottom: 6px; border-bottom: 3px solid #003300; display: block; }
+  .month-label:first-of-type { margin-top: 0; }
 
-  /* Session cards */
-  .session { display: flex; gap: 16px; padding: 16px 18px; background: #fff; border: 1px solid #e3e1dc; border-radius: 10px; box-shadow: 0 1px 2px rgba(27,27,27,.05); margin: 0 0 10px; transition: box-shadow .15s ease, border-color .15s ease; }
-  .session:hover { border-color: #cfe6d6; box-shadow: 0 2px 8px rgba(0,120,52,.10); }
-  .badge { flex: 0 0 56px; width: 56px; height: 56px; background: #eaf5ed; border: 1px solid #cfe6d6; border-radius: 8px; text-align: center; padding-top: 8px; }
-  .badge .mo { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .08em; color: #006b2f; text-transform: uppercase; line-height: 1.3; }
-  .badge .day { display: block; font-size: 1.3rem; font-weight: 800; color: #003300; line-height: 1.1; }
+  /* Sessions: ruled editorial rows */
+  .session { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid #d9d6d0; margin: 0; }
+  .badge { flex: 0 0 64px; text-align: left; padding-top: 2px; }
+  .badge .mo { display: block; font-size: .66rem; font-weight: 700; letter-spacing: .14em; color: #007834; text-transform: uppercase; line-height: 1.2; }
+  .badge .day { display: block; font-family: "Libre Franklin", Arial, sans-serif; font-size: 1.85rem; font-weight: 800; color: #1b1b1b; line-height: 1.05; }
+  .badge.recurring .mo { color: #6e5715; }
+  .badge.recurring .day { font-size: .74rem; font-weight: 700; color: #1b1b1b; text-transform: uppercase; letter-spacing: .1em; padding-top: 4px; font-family: "Public Sans", Arial, sans-serif; }
   .info { flex: 1; min-width: 0; }
-  h3.title { font-weight: 700; font-size: 1rem; margin: 0 0 4px; color: #1b1b1b; font-family: inherit; }
-  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 4px; }
-  .action { font-size: .85rem; margin: 0; }
-  .tag { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 9px; border-radius: 999px; color: #fff; margin-right: 7px; vertical-align: 1px; }
-  .empty { font-size: .9rem; color: #4a4a4a; background: #fff; border: 1px dashed #d0cec8; border-radius: 10px; padding: 22px 20px; }
-  .past-toggle { font-size: .8rem; margin: 14px 0 0; }
-  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
-  .session.past { opacity: .65; }
+  h3.title { font-family: "Libre Franklin", Arial, sans-serif; font-weight: 700; font-size: 1.02rem; line-height: 1.35; margin: 0 0 5px; color: #1b1b1b; }
+  .ptag { display: inline-flex; align-items: center; gap: 6px; font-family: "Public Sans", Arial, sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3d4551; margin: 0 0 3px; }
+  .swatch { width: 10px; height: 10px; display: inline-block; flex: none; }
+  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 5px; }
+  .action { font-size: .85rem; margin: 0; font-weight: 600; }
+  .empty { font-size: .9rem; color: #3d4551; border-top: 3px solid #003300; border-bottom: 1px solid #d9d6d0; padding: 18px 0; }
+  .past-toggle { font-size: .8rem; margin: 16px 0 0; }
+  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; padding: 0; }
+  .session.past { opacity: .55; }
 
-  /* Month grid card */
-  .cal-card { background: #fff; border: 1px solid #e3e1dc; border-radius: 10px; box-shadow: 0 1px 2px rgba(27,27,27,.05); overflow: hidden; }
+  /* Month grid: flat, strong top rule */
+  .cal-card { border-top: 3px solid #003300; }
   .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
   .cal caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .cal th { background: #003300; color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 9px 4px; border: none; }
-  .cal td { border: 1px solid #eceae6; vertical-align: top; padding: 5px; height: 98px; background: #fff; }
-  .cal tr td:first-child { border-left: none; }
-  .cal tr td:last-child { border-right: none; }
-  .cal tbody tr:last-child td { border-bottom: none; }
+  .cal th { background: #fff; color: #1b1b1b; font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 10px 6px 8px; border-bottom: 1px solid #1b1b1b; text-align: left; }
+  .cal td { border-bottom: 1px solid #d9d6d0; border-right: 1px solid #eceae6; vertical-align: top; padding: 6px; height: 100px; background: #fff; }
+  .cal td:last-child { border-right: none; }
   .cal td.out { background: #faf9f7; }
-  .cal td.today { background: #eaf5ed; box-shadow: inset 0 3px 0 #F5B324; }
-  .daynum { font-size: .78rem; font-weight: 700; color: #4a4a4a; margin: 0 0 4px; }
-  .today-flag { display: inline-block; font-size: .58rem; font-weight: 800; letter-spacing: .06em; color: #6e5715; text-transform: uppercase; margin-left: 5px; vertical-align: 1px; }
-  .cal td.out .daynum { color: #b0aea9; }
-  .cal td.today .daynum { color: #003300; }
-  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.25; color: #fff; border: none; border-radius: 4px; padding: 4px 8px; margin: 0 0 4px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .chip:hover { filter: brightness(1.12); }
-  .more-link { font-size: .68rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; }
+  .cal td.today { box-shadow: inset 4px 0 0 #F5B324; background: #fffdf5; }
+  .daynum { font-family: "Libre Franklin", Arial, sans-serif; font-size: .88rem; font-weight: 800; color: #1b1b1b; margin: 0 0 5px; }
+  .cal td.out .daynum { color: #b0aea9; font-weight: 700; }
+  .today-flag { display: inline-block; font-family: "Public Sans", Arial, sans-serif; font-size: .56rem; font-weight: 700; letter-spacing: .12em; color: #6e5715; text-transform: uppercase; margin-left: 6px; vertical-align: 2px; }
+  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.3; color: #1b1b1b; background: #fff; border: none; border-left: 3px solid; padding: 2px 0 2px 7px; margin: 0 0 5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chip:hover { text-decoration: underline; text-underline-offset: 2px; }
+  .more-link { font-size: .68rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0 0 0 10px; cursor: pointer; text-decoration: underline; }
   .dot-row { display: flex; flex-wrap: wrap; gap: 3px; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot { width: 9px; height: 9px; display: inline-block; }
   .day-btn { display: block; width: 100%; background: none; border: none; padding: 0; text-align: left; cursor: pointer; }
 
-  /* Detail panel */
-  .detail { border-left: 4px solid #007834; background: #eaf5ed; border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 14px 0 0; }
+  /* Detail panel: established AOE callout, squared */
+  .detail { border-left: 4px solid #007834; background: #eaf5ed; padding: 16px 20px; margin: 16px 0 0; }
   .detail[hidden] { display: none; }
-  .detail h2 { margin: 0 0 4px; font-size: 1rem; color: #003300; }
+  .detail h2 { font-family: "Libre Franklin", Arial, sans-serif; margin: 0 0 6px; font-size: 1rem; color: #1b1b1b; }
+  .detail .ptag { margin-right: 8px; }
   .detail p { margin: 3px 0; font-size: .88rem; }
   .detail .close { float: right; font-size: .78rem; font-weight: 700; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
 
   @media (max-width: 640px) {
-    .cal td { height: 62px; }
+    .cal td { height: 64px; }
     .chip { display: none; }
     .more-link { display: none; }
     .toolbar { justify-content: flex-start; }
-    .session { padding: 12px; gap: 12px; }
+    .session { gap: 14px; }
+    .badge { flex: 0 0 52px; }
+    .badge .day { font-size: 1.55rem; }
   }
   @media (min-width: 641px) {
     .dot-row, .day-btn { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .session { transition: none; }
   }
 </style>
 </head>
@@ -161,7 +164,14 @@ function buildFilters() {
   const wrap = document.getElementById("filters");
   const mk = (key, text) => {
     const b = document.createElement("button");
-    b.type = "button"; b.textContent = text;
+    b.type = "button";
+    if (key !== "all") {
+      const sw = document.createElement("span");
+      sw.className = "fswatch";
+      sw.style.background = PROGRAMS[key].color;
+      b.appendChild(sw);
+    }
+    b.appendChild(document.createTextNode(text));
     b.setAttribute("aria-pressed", key === activeFilter ? "true" : "false");
     b.addEventListener("click", () => {
       activeFilter = key;
@@ -197,7 +207,8 @@ function renderList() {
     const prog = PROGRAMS[s.program];
     row.innerHTML =
       '<div class="badge" aria-hidden="true"><span class="mo">' + MONTH_ABBR[d.getMonth()] + '</span><span class="day">' + d.getDate() + '</span></div>' +
-      '<div class="info"><h3 class="title"><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</h3>' +
+      '<div class="info"><p class="ptag"><span class="swatch" style="background:' + prog.color + '"></span>' + esc(prog.label) + '</p>' +
+      '<h3 class="title">' + esc(s.title) + '</h3>' +
       '<p class="meta">' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
       actionHTML(s) + '</div>';
     list.appendChild(row);
@@ -272,7 +283,7 @@ function renderMonth() {
         items.slice(0, MAX).forEach(s => {
           const chip = document.createElement("button");
           chip.type = "button"; chip.className = "chip";
-          chip.style.background = PROGRAMS[s.program].color;
+          chip.style.borderLeftColor = PROGRAMS[s.program].color;
           chip.textContent = s.title;
           chip.setAttribute("aria-label", s.title + ", " + fullDate(cellDate) + ". View details.");
           chip.addEventListener("click", () => showDetail([s], cellDate));
@@ -314,7 +325,8 @@ function showDetail(items, d) {
     const prog = PROGRAMS[s.program];
     const block = document.createElement("div");
     block.innerHTML =
-      '<h2><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</h2>' +
+      '<p class="ptag"><span class="swatch" style="background:' + prog.color + '"></span>' + esc(prog.label) + '</p>' +
+      '<h2>' + esc(s.title) + '</h2>' +
       '<p>' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
       actionHTML(s);
     bodyEl.appendChild(block);
@@ -356,6 +368,20 @@ document.getElementById("pastBtn").addEventListener("click", function() {
   this.textContent = showPast ? "Hide past sessions" : "Show past sessions";
   renderList();
 });
+
+(function autoHeight() {
+  let last = 0;
+  function post() {
+    const height = Math.ceil(document.body.getBoundingClientRect().height);
+    if (Math.abs(height - last) > 4) {
+      last = height;
+      parent.postMessage({ type: "shs-cal-height", height: height }, "*");
+    }
+  }
+  if ("ResizeObserver" in window) new ResizeObserver(post).observe(document.body);
+  window.addEventListener("load", post);
+  setTimeout(post, 600);
+})();
 
 if (typeof SESSIONS === "undefined" || typeof PROGRAMS === "undefined") {
   document.querySelector(".wrap").innerHTML =
