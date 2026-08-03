@@ -161,7 +161,7 @@ def main():
         loc_str = "Virtual" if (not location or "virtual" in location.lower()
                                 or "teams" in location.lower() or "zoom" in location.lower()) else location
 
-        meta_parts = [p for p in [time_str, loc_str, body["audience"], body["provider"]] if p]
+        meta_parts = [p for p in [time_str, loc_str] if p]
 
         session = {
             "date": d.isoformat(),
@@ -169,6 +169,10 @@ def main():
             "title": summary,
             "meta": " \u00b7 ".join(meta_parts),
         }
+        if body["audience"]:
+            session["audience"] = body["audience"]
+        if body["provider"]:
+            session["provider"] = body["provider"]
 
         reg = body["register"]
         if reg and reg.lower().startswith("http"):
