@@ -233,7 +233,7 @@ function actionHTML(s) {
   if (s.action === "reg" || s.action === "details") {
     const prefix = s.action === "details" ? "<strong>Details:</strong> " : "<strong>Registration:</strong> ";
     const note = s.noteText ? " \u00b7 " + esc(s.noteText) : "";
-    return '<p class="action fact">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a>' + note + '</p>';
+    return '<p class="action fact">' + prefix + '<a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(s.linkText || "More information") + ' (opens in new window)</a>' + note + '</p>';
   }
   return s.noteText ? '<p class="action fact"><strong>Registration:</strong> ' + esc(s.noteText) + '</p>' : "";
 }
