@@ -6,199 +6,316 @@
 <title>Safe and Healthy Schools Professional Learning Calendar</title>
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; background: #fff; line-height: 1.55; padding: 8px 4px; }
+  body { margin: 0; font-family: "Public Sans", "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; background: #fff; line-height: 1.5; padding: 8px 4px; }
+  .wrap { max-width: 940px; }
   a { color: #005ea2; }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; padding: 0; }
-  .filters button { font-family: inherit; font-size: .82rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
+  button { font-family: inherit; }
+  button:focus-visible, a:focus-visible { outline: 3px solid #005ea2; outline-offset: 2px; }
+
+  /* Toolbar */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 0 0 10px; }
+  .view-toggle { display: flex; border: 1.5px solid #007834; border-radius: 6px; overflow: hidden; }
+  .view-toggle button { font-size: .85rem; font-weight: 700; padding: 7px 18px; border: none; background: #fff; color: #005a27; cursor: pointer; }
+  .view-toggle button + button { border-left: 1.5px solid #007834; }
+  .view-toggle button[aria-pressed="true"] { background: #007834; color: #fff; }
+  .month-nav { display: flex; gap: 6px; align-items: center; }
+  .month-nav button { font-size: .85rem; font-weight: 700; padding: 7px 12px; border: 1.5px solid #007834; border-radius: 6px; background: #fff; color: #005a27; cursor: pointer; }
+  .month-nav button:hover { background: #eaf5ed; }
+  .month-title { font-size: 1.15rem; font-weight: 800; color: #003300; min-width: 172px; text-align: center; }
+
+  /* Filter pills */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
+  .filters button { font-size: .8rem; font-weight: 700; padding: 5px 13px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
   .filters button:hover { background: #eaf5ed; }
   .filters button[aria-pressed="true"] { background: #007834; color: #fff; }
-  .filters button:focus-visible { outline: 3px solid #005ea2; outline-offset: 2px; }
-  .filter-note { font-size: .8rem; color: #5c5c5c; margin: 0 0 14px; }
+  .filter-note { font-size: .78rem; color: #5c5c5c; margin: 0 0 14px; }
+
+  /* Month grid */
+  .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .cal caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .cal th { background: #003300; color: #fff; font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 8px 4px; border: 1px solid #003300; }
+  .cal td { border: 1px solid #D7D2CB; vertical-align: top; padding: 4px; height: 96px; background: #fff; }
+  .cal td.out { background: #f7f6f4; }
+  .cal td.today { background: #eaf5ed; box-shadow: inset 0 3px 0 #F5B324; }
+  .daynum { font-size: .8rem; font-weight: 700; color: #3d4551; margin: 0 0 3px; }
+  .cal td.out .daynum { color: #a9a9a9; }
+  .cal td.today .daynum { color: #003300; }
+  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.25; color: #fff; border: none; border-radius: 3px; padding: 3px 6px; margin: 0 0 3px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chip:hover { filter: brightness(1.12); }
+  .more-link { font-size: .68rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; }
+  .dot-row { display: flex; flex-wrap: wrap; gap: 3px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .day-btn { display: block; width: 100%; background: none; border: none; padding: 0; text-align: left; cursor: pointer; }
+
+  /* Detail panel */
+  .detail { border-left: 4px solid #007834; background: #eaf5ed; padding: 14px 18px; margin: 14px 0 0; }
+  .detail[hidden] { display: none; }
+  .detail h2 { margin: 0 0 4px; font-size: 1rem; color: #003300; }
+  .detail p { margin: 3px 0; font-size: .88rem; }
+  .detail .close { float: right; font-size: .78rem; font-weight: 700; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+
+  /* List view */
   .month-label { font-size: .8rem; font-weight: 800; letter-spacing: .1em; color: #006b2f; text-transform: uppercase; margin: 20px 0 2px; border-bottom: 2px solid #F5B324; display: inline-block; padding-bottom: 2px; }
   .session { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid #e6e6e6; }
   .badge { flex: 0 0 56px; width: 56px; height: 56px; background: #eaf5ed; border: 1px solid #cfe6d6; border-radius: 6px; text-align: center; padding-top: 8px; }
   .badge .mo { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .08em; color: #006b2f; text-transform: uppercase; line-height: 1.3; }
   .badge .day { display: block; font-size: 1.3rem; font-weight: 800; color: #003300; line-height: 1.1; }
-  .badge.recurring { background: #faf8f2; border-color: #ecdfb8; }
-  .badge.recurring .mo { color: #8a6d1a; }
-  .badge.recurring .day { font-size: .68rem; font-weight: 800; color: #6e5715; text-transform: uppercase; letter-spacing: .03em; line-height: 1.3; padding-top: 3px; }
   .info { flex: 1; min-width: 0; }
-  .title { font-weight: 700; font-size: .98rem; margin: 0 0 2px; }
-  .meta { font-size: .85rem; color: #3d4551; margin: 0 0 3px; }
-  .action { font-size: .85rem; margin: 0; }
-  .tag { display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: #fff; margin-right: 6px; vertical-align: 1px; }
-  .empty { font-size: .9rem; color: #5c5c5c; padding: 20px 0; }
-  .past-toggle { font-size: .82rem; margin: 16px 0 0; }
-  .past-toggle button { font-family: inherit; font-size: .82rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
-  .session.past { opacity: .6; }
+  .title { font-weight: 700; font-size: .96rem; margin: 0 0 2px; }
+  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 3px; }
+  .action { font-size: .84rem; margin: 0; }
+  .tag { display: inline-block; font-size: .65rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: #fff; margin-right: 6px; vertical-align: 1px; }
+  .empty { font-size: .9rem; color: #5c5c5c; padding: 18px 0; }
+  .past-toggle { font-size: .8rem; margin: 14px 0 0; }
+  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+
+  @media (max-width: 640px) {
+    .cal td { height: 62px; }
+    .chip { display: none; }
+    .more-link { display: none; }
+    .toolbar { justify-content: flex-start; }
+  }
+  @media (min-width: 641px) {
+    .dot-row, .day-btn { display: none; }
+  }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="filters" role="group" aria-label="Filter sessions by program area" id="filters"></div>
-<p class="filter-note">Select a program area to filter the list. Past sessions are hidden automatically.</p>
-<div id="list" aria-live="polite"></div>
-<p class="past-toggle"><button type="button" id="pastBtn" aria-pressed="false">Show past sessions</button></p>
+  <div class="toolbar">
+    <div class="view-toggle" role="group" aria-label="Calendar view">
+      <button type="button" id="viewList" aria-pressed="true">List</button>
+      <button type="button" id="viewMonth" aria-pressed="false">Month</button>
+    </div>
+    <div class="month-nav" id="monthNav" hidden>
+      <button type="button" id="prevBtn" aria-label="Previous month">&#8249; Prev</button>
+      <span class="month-title" id="monthTitle" aria-live="polite"></span>
+      <button type="button" id="nextBtn" aria-label="Next month">Next &#8250;</button>
+      <button type="button" id="todayBtn">Today</button>
+    </div>
+  </div>
 
+  <div class="filters" role="group" aria-label="Filter by program area" id="filters"></div>
+  <p class="filter-note" id="filterNote">Select a program area to filter. Past sessions are hidden from the list automatically.</p>
+
+  <div id="listView">
+    <div id="list" aria-live="polite"></div>
+    <p class="past-toggle"><button type="button" id="pastBtn" aria-pressed="false">Show past sessions</button></p>
+  </div>
+
+  <div id="monthView" hidden>
+    <table class="cal" id="calTable">
+      <caption id="calCaption"></caption>
+      <thead>
+        <tr><th scope="col"><span aria-hidden="true">Sun</span><span class="sr">day</span></th><th scope="col">Mon</th><th scope="col">Tue</th><th scope="col">Wed</th><th scope="col">Thu</th><th scope="col">Fri</th><th scope="col">Sat</th></tr>
+      </thead>
+      <tbody id="calBody"></tbody>
+    </table>
+    <div class="detail" id="detail" hidden tabindex="-1" role="region" aria-label="Session details">
+      <button type="button" class="close" id="detailClose">Close</button>
+      <div id="detailBody"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="sessions.js"></script>
 <script>
-const PROGRAMS = {
-  bta:       { label: "BTA",             name: "Behavioral Threat Assessment", color: "#007834" },
-  safety:    { label: "Safety",          name: "Violent Intruder Drills",      color: "#4a4a4a" },
-  hhb:       { label: "HHB",             name: "Harassment, Hazing & Bullying",color: "#6e2c8e" },
-  mkv:       { label: "McKinney-Vento",  name: "McKinney-Vento",               color: "#00629b" },
-  r4500:     { label: "Rule 4500",       name: "Rule 4500",                    color: "#9c3d00" },
-  discipline:{ label: "Discipline",      name: "Exclusionary Discipline",      color: "#4a4a4a" },
-  foster:    { label: "Foster Care",     name: "Foster Care / DCF",            color: "#4d5d2c" },
-  seb:       { label: "Screening",       name: "Universal Screening",          color: "#8a1e41" }
-};
-
-const SESSIONS = [
-  { date: "2026-08-03", program: "bta", title: "Behavioral Threat Assessment Training Level I", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual \u00b7 BTA team members, administrators, school safety leads", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
-  { date: "2026-08-04", program: "bta", title: "Behavioral Threat Assessment Training Level II", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual \u00b7 BTA team leads or senior members, administrators", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
-  { date: "2026-08-10", program: "mkv", title: "McKinney-Vento 101", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators, coordinators, registrars", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
-  { date: "2026-08-11", program: "mkv", title: "McKinney-Vento Eligibility: Criteria and Determinations", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
-  { date: "2026-08-14", program: "mkv", title: "McKinney-Vento: School Selection and Best Interest Determinations", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
-  { date: "2026-08-20", program: "foster", title: "Educational Stability / Best Interest Determination", meta: "1:00 - 3:00 p.m. \u00b7 Virtual \u00b7 Also offered Aug 27 and Sep 17 \u00b7 Principals, special education administrators, DCF workers", action: "none", noteText: "No registration needed" },
-  { date: "2026-08-21", endDate: "2026-10-23", recurring: "Fridays", program: "mkv", title: "McKinney-Vento Office Hours", meta: "Fridays, 10:00 - 11:00 a.m., August 21 - October 23 \u00b7 Virtual \u00b7 Local homeless liaisons", action: "none", noteText: "No registration needed \u00b7 drop in any Friday" },
-  { date: "2026-08-27", program: "foster", title: "Educational Stability / Best Interest Determination (second offering)", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual", action: "none", noteText: "No registration needed" },
-  { date: "2026-09-09", program: "r4500", title: "Rule 4500 Overview", meta: "12:30 - 2:30 p.m. \u00b7 Virtual \u00b7 Administrators, special education directors, crisis response teams", action: "soon", noteText: "Registration coming summer 2026" },
-  { date: "2026-09-10", program: "seb", title: "Universal Screening 101: Building the Foundations of an SEB Data System", meta: "10:00 - 11:00 a.m. \u00b7 Virtual \u00b7 MTSS coordinators, administrators, counselors, teacher leaders", action: "details", url: "https://education.vermont.gov/sites/aoe/files/documents/edu-universal-screening-for-social-emotional-behavioral-needs-and-strengths-in-vt-schools.pdf", linkText: "Universal Screening guidance document" },
-  { date: "2026-09-16", endDate: "2027-05-19", recurring: "3rd Wed", program: "r4500", title: "Rule 4500 Guidance Series Office Hours", meta: "Third Wednesday monthly, 11:00 a.m. - 12:00 p.m., September - May \u00b7 Virtual", action: "none", noteText: "No registration needed \u00b7 drop in" },
-  { date: "2026-09-17", program: "foster", title: "Educational Stability / Best Interest Determination (third offering)", meta: "2:00 - 3:00 p.m. \u00b7 Virtual", action: "none", noteText: "No registration needed" },
-  { date: "2026-09-21", endDate: "2027-06-21", recurring: "3rd Mon", program: "hhb", title: "Harassment, Hazing and Bullying Office Hours", meta: "Third Monday monthly, 1:00 - 2:00 p.m., September - June \u00b7 Virtual \u00b7 School/district administrators and designees", action: "none", noteText: "No registration needed \u00b7 drop in" },
-  { date: "2026-10-05", program: "bta", title: "Behavioral Threat Assessment Training Level I (second offering)", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
-  { date: "2026-10-05", program: "discipline", title: "Exclusionary Discipline Guidance Overview Training", meta: "9:00 - 11:00 a.m. \u00b7 Virtual \u00b7 Second offering January 11, 2027 \u00b7 District/SU and school administrators", action: "soon", noteText: "Registration coming summer 2026" },
-  { date: "2026-10-06", program: "bta", title: "Behavioral Threat Assessment Training Level II (second offering)", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
-  { date: "2026-10-07", program: "hhb", title: "HHB Tool Kit Workshop: SU/SD, School, and Educator", meta: "9:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 School/district administrators, designees, educators", action: "reg", url: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=O5O0IK26PEOcAnDtzHVZxrCjEi6hGPtEnXtYvzFVNH9UQUhQUDFXTjhIV0NLSTc2RlVHUjZaRTVUUC4u&route=shorturl", linkText: "Register for the HHB Tool Kit Workshop" },
-  { date: "2026-10-08", program: "r4500", title: "Rule 4500 Administrator Training", meta: "9:00 - 10:30 a.m. \u00b7 Virtual \u00b7 Second offering January 7, 2027 \u00b7 Superintendents, directors, administrators", action: "soon", noteText: "Registration coming summer 2026" },
-  { date: "2026-10-13", program: "hhb", title: "HHB Tool Kit Workshop: Communities, Families, Students", meta: "9:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Community members, families, students", action: "reg", url: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=O5O0IK26PEOcAnDtzHVZxrCjEi6hGPtEnXtYvzFVNH9UQUhQUDFXTjhIV0NLSTc2RlVHUjZaRTVUUC4u&route=shorturl", linkText: "Register for the HHB Tool Kit Workshop" },
-  { date: "2026-10-19", program: "seb", title: "Universal Screening 201: Using Tier 1 SEB Data to Strengthen Classroom and School Climate", meta: "12:00 - 1:00 p.m. \u00b7 Virtual \u00b7 MTSS coordinators, administrators, counselors, teacher leaders", action: "details", url: "https://education.vermont.gov/sites/aoe/files/documents/edu-universal-screening-for-social-emotional-behavioral-needs-and-strengths-in-vt-schools.pdf", linkText: "Universal Screening guidance document" },
-  { date: "2027-01-07", program: "r4500", title: "Rule 4500 Administrator Training (second offering)", meta: "1:00 - 2:30 p.m. \u00b7 Virtual", action: "soon", noteText: "Registration coming summer 2026" },
-  { date: "2027-01-11", program: "discipline", title: "Exclusionary Discipline Guidance Overview Training (second offering)", meta: "1:00 - 3:00 p.m. \u00b7 Virtual", action: "soon", noteText: "Registration coming summer 2026" }
-];
-
 const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MONTH_ABBR = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
+let view = "list";
 let activeFilter = "all";
 let showPast = false;
+let current = new Date(); current.setDate(1); current.setHours(0,0,0,0);
 
 function parseDate(s) { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); }
 function todayMidnight() { const t = new Date(); t.setHours(0,0,0,0); return t; }
-function isPast(s) {
-  const cutoff = s.endDate ? parseDate(s.endDate) : parseDate(s.date);
-  return cutoff < todayMidnight();
-}
+function isPast(s) { return parseDate(s.date) < todayMidnight(); }
+function filtered() { return SESSIONS.filter(s => activeFilter === "all" || s.program === activeFilter); }
+function fullDate(d) { return MONTH_NAMES[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear(); }
 
+/* ---------- Filters ---------- */
 function buildFilters() {
   const wrap = document.getElementById("filters");
-  const mkBtn = (key, text) => {
+  const mk = (key, text) => {
     const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = text;
+    b.type = "button"; b.textContent = text;
     b.setAttribute("aria-pressed", key === activeFilter ? "true" : "false");
     b.addEventListener("click", () => {
       activeFilter = key;
-      wrap.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
-      b.setAttribute("aria-pressed", "true");
+      wrap.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true");
       render();
     });
     return b;
   };
-  wrap.appendChild(mkBtn("all", "All programs"));
-  Object.entries(PROGRAMS).forEach(([key, p]) => wrap.appendChild(mkBtn(key, p.name)));
+  wrap.appendChild(mk("all","All programs"));
+  Object.entries(PROGRAMS).forEach(([k,p]) => wrap.appendChild(mk(k, p.name)));
 }
 
-function render() {
+/* ---------- List view ---------- */
+function renderList() {
   const list = document.getElementById("list");
   list.innerHTML = "";
-  const visible = SESSIONS
-    .filter(s => activeFilter === "all" || s.program === activeFilter)
-    .filter(s => showPast || !isPast(s))
-    .sort((a,b) => a.date.localeCompare(b.date));
-
+  const visible = filtered().filter(s => showPast || !isPast(s)).sort((a,b) => a.date.localeCompare(b.date));
   if (!visible.length) {
-    const p = document.createElement("p");
-    p.className = "empty";
-    p.textContent = "No upcoming sessions in this program area right now. Check back soon or select another program.";
-    list.appendChild(p);
+    list.innerHTML = '<p class="empty">No upcoming sessions in this program area right now. Check back soon or select another program.</p>';
     return;
   }
-
   let lastMonth = "";
   visible.forEach(s => {
     const d = parseDate(s.date);
     const monthKey = MONTH_NAMES[d.getMonth()] + " " + d.getFullYear();
     if (monthKey !== lastMonth) {
       const h = document.createElement("h2");
-      h.className = "month-label";
-      h.textContent = monthKey;
-      list.appendChild(h);
-      lastMonth = monthKey;
+      h.className = "month-label"; h.textContent = monthKey;
+      list.appendChild(h); lastMonth = monthKey;
     }
-
-    const row = document.createElement("div");
-    row.className = "session" + (isPast(s) ? " past" : "");
-
-    const badge = document.createElement("div");
-    badge.className = "badge" + (s.recurring ? " recurring" : "");
-    badge.setAttribute("aria-hidden", "true");
-    if (s.recurring) {
-      badge.innerHTML = '<span class="mo">' + s.recurring + '</span><span class="day">Series</span>';
-    } else {
-      badge.innerHTML = '<span class="mo">' + MONTH_ABBR[d.getMonth()] + '</span><span class="day">' + d.getDate() + '</span>';
-    }
-
-    const info = document.createElement("div");
-    info.className = "info";
+    const row = document.createElement("div"); row.className = "session";
     const prog = PROGRAMS[s.program];
-
-    const title = document.createElement("p");
-    title.className = "title";
-    const tag = document.createElement("span");
-    tag.className = "tag";
-    tag.style.background = prog.color;
-    tag.textContent = prog.label;
-    title.appendChild(tag);
-    title.appendChild(document.createTextNode(s.title));
-
-    const meta = document.createElement("p");
-    meta.className = "meta";
-    const fullDate = MONTH_NAMES[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-    meta.textContent = (s.recurring ? "Starts " + fullDate : fullDate) + " \u00b7 " + s.meta;
-
-    const action = document.createElement("p");
-    action.className = "action";
-    if (s.action === "reg" || s.action === "details") {
-      const prefix = s.action === "details" ? "Details: " : "";
-      if (prefix) action.appendChild(document.createTextNode(prefix));
-      const a = document.createElement("a");
-      a.href = s.url;
-      a.target = "_top";
-      a.textContent = s.linkText;
-      action.appendChild(a);
-    } else {
-      action.textContent = s.noteText || "";
-    }
-
-    info.appendChild(title);
-    info.appendChild(meta);
-    info.appendChild(action);
-    row.appendChild(badge);
-    row.appendChild(info);
+    row.innerHTML =
+      '<div class="badge" aria-hidden="true"><span class="mo">' + MONTH_ABBR[d.getMonth()] + '</span><span class="day">' + d.getDate() + '</span></div>' +
+      '<div class="info"><p class="title"><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</p>' +
+      '<p class="meta">' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
+      actionHTML(s) + '</div>';
     list.appendChild(row);
   });
 }
 
+function actionHTML(s) {
+  if (s.action === "reg" || s.action === "details") {
+    const prefix = s.action === "details" ? "Details: " : "";
+    return '<p class="action">' + prefix + '<a href="' + esc(s.url) + '" target="_top">' + esc(s.linkText || "More information") + '</a></p>';
+  }
+  return s.noteText ? '<p class="action">' + esc(s.noteText) + '</p>' : "";
+}
+
+function esc(t) { const d = document.createElement("div"); d.textContent = t == null ? "" : String(t); return d.innerHTML; }
+
+/* ---------- Month view ---------- */
+function renderMonth() {
+  const y = current.getFullYear(), m = current.getMonth();
+  document.getElementById("monthTitle").textContent = MONTH_NAMES[m] + " " + y;
+  document.getElementById("calCaption").textContent = "Sessions for " + MONTH_NAMES[m] + " " + y;
+
+  const byDate = {};
+  filtered().forEach(s => { (byDate[s.date] = byDate[s.date] || []).push(s); });
+
+  const body = document.getElementById("calBody");
+  body.innerHTML = "";
+  const firstDow = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const today = todayMidnight();
+  let day = 1 - firstDow;
+
+  for (let week = 0; week < 6; week++) {
+    if (day > daysInMonth) break;
+    const tr = document.createElement("tr");
+    for (let dow = 0; dow < 7; dow++, day++) {
+      const cellDate = new Date(y, m, day);
+      const inMonth = day >= 1 && day <= daysInMonth;
+      const td = document.createElement("td");
+      if (!inMonth) td.className = "out";
+      if (inMonth && cellDate.getTime() === today.getTime()) td.classList.add("today");
+
+      const num = document.createElement("p");
+      num.className = "daynum";
+      num.textContent = cellDate.getDate();
+      td.appendChild(num);
+
+      if (inMonth) {
+        const key = cellDate.getFullYear() + "-" + String(m+1).padStart(2,"0") + "-" + String(day).padStart(2,"0");
+        const items = byDate[key] || [];
+        const MAX = 3;
+        items.slice(0, MAX).forEach(s => {
+          const chip = document.createElement("button");
+          chip.type = "button"; chip.className = "chip";
+          chip.style.background = PROGRAMS[s.program].color;
+          chip.textContent = s.title;
+          chip.setAttribute("aria-label", s.title + ", " + fullDate(cellDate) + ". View details.");
+          chip.addEventListener("click", () => showDetail([s], cellDate));
+          td.appendChild(chip);
+        });
+        if (items.length > MAX) {
+          const more = document.createElement("button");
+          more.type = "button"; more.className = "more-link";
+          more.textContent = "+" + (items.length - MAX) + " more";
+          more.addEventListener("click", () => showDetail(items, cellDate));
+          td.appendChild(more);
+        }
+        if (items.length) {
+          const dayBtn = document.createElement("button");
+          dayBtn.type = "button"; dayBtn.className = "day-btn";
+          dayBtn.setAttribute("aria-label", items.length + " session" + (items.length>1?"s":"") + " on " + fullDate(cellDate) + ". View details.");
+          const dots = document.createElement("span"); dots.className = "dot-row";
+          items.slice(0,4).forEach(s => {
+            const dot = document.createElement("span");
+            dot.className = "dot"; dot.style.background = PROGRAMS[s.program].color;
+            dots.appendChild(dot);
+          });
+          dayBtn.appendChild(dots);
+          dayBtn.addEventListener("click", () => showDetail(items, cellDate));
+          td.appendChild(dayBtn);
+        }
+      }
+      tr.appendChild(td);
+    }
+    body.appendChild(tr);
+  }
+}
+
+function showDetail(items, d) {
+  const box = document.getElementById("detail");
+  const bodyEl = document.getElementById("detailBody");
+  bodyEl.innerHTML = "";
+  items.forEach(s => {
+    const prog = PROGRAMS[s.program];
+    const block = document.createElement("div");
+    block.innerHTML =
+      '<h2><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</h2>' +
+      '<p>' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
+      actionHTML(s);
+    bodyEl.appendChild(block);
+  });
+  box.hidden = false;
+  box.focus();
+}
+
+/* ---------- View switching ---------- */
+function setView(v) {
+  view = v;
+  document.getElementById("viewList").setAttribute("aria-pressed", v === "list" ? "true" : "false");
+  document.getElementById("viewMonth").setAttribute("aria-pressed", v === "month" ? "true" : "false");
+  document.getElementById("listView").hidden = v !== "list";
+  document.getElementById("monthView").hidden = v !== "month";
+  document.getElementById("monthNav").hidden = v !== "month";
+  document.getElementById("filterNote").textContent = v === "list"
+    ? "Select a program area to filter. Past sessions are hidden from the list automatically."
+    : "Select a program area to filter. Select a session in the grid for details and registration.";
+  render();
+}
+
+function render() {
+  if (view === "list") renderList(); else renderMonth();
+}
+
+document.getElementById("viewList").addEventListener("click", () => setView("list"));
+document.getElementById("viewMonth").addEventListener("click", () => setView("month"));
+document.getElementById("prevBtn").addEventListener("click", () => { current.setMonth(current.getMonth()-1); document.getElementById("detail").hidden = true; renderMonth(); });
+document.getElementById("nextBtn").addEventListener("click", () => { current.setMonth(current.getMonth()+1); document.getElementById("detail").hidden = true; renderMonth(); });
+document.getElementById("todayBtn").addEventListener("click", () => { current = new Date(); current.setDate(1); current.setHours(0,0,0,0); document.getElementById("detail").hidden = true; renderMonth(); });
+document.getElementById("detailClose").addEventListener("click", () => { document.getElementById("detail").hidden = true; });
 document.getElementById("pastBtn").addEventListener("click", function() {
   showPast = !showPast;
   this.setAttribute("aria-pressed", showPast ? "true" : "false");
   this.textContent = showPast ? "Hide past sessions" : "Show past sessions";
-  render();
+  renderList();
 });
 
 buildFilters();
-render();
+setView("list");
 </script>
 </body>
 </html>
