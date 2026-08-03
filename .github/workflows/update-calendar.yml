@@ -1,0 +1,39 @@
+name: Update calendar from Outlook feed
+
+on:
+  schedule:
+    - cron: "20 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install icalendar recurring-ical-events
+
+      - name: Build sessions.js from ICS feed
+        env:
+          ICS_URL: ${{ secrets.ICS_URL }}
+        run: python scripts/build.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "calendar-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if ! git diff --quiet sessions.js; then
+            git add sessions.js
+            git commit -m "Automated calendar update"
+            git push
+          else
+            echo "No changes in feed - nothing to commit."
+          fi
