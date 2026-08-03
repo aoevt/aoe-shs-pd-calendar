@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Safe and Healthy Schools Professional Learning Calendar</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; background: #fff; line-height: 1.55; padding: 8px 4px; }
+  a { color: #005ea2; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; padding: 0; }
+  .filters button { font-family: inherit; font-size: .82rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
+  .filters button:hover { background: #eaf5ed; }
+  .filters button[aria-pressed="true"] { background: #007834; color: #fff; }
+  .filters button:focus-visible { outline: 3px solid #005ea2; outline-offset: 2px; }
+  .filter-note { font-size: .8rem; color: #5c5c5c; margin: 0 0 14px; }
+  .month-label { font-size: .8rem; font-weight: 800; letter-spacing: .1em; color: #006b2f; text-transform: uppercase; margin: 20px 0 2px; border-bottom: 2px solid #F5B324; display: inline-block; padding-bottom: 2px; }
+  .session { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid #e6e6e6; }
+  .badge { flex: 0 0 56px; width: 56px; height: 56px; background: #eaf5ed; border: 1px solid #cfe6d6; border-radius: 6px; text-align: center; padding-top: 8px; }
+  .badge .mo { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .08em; color: #006b2f; text-transform: uppercase; line-height: 1.3; }
+  .badge .day { display: block; font-size: 1.3rem; font-weight: 800; color: #003300; line-height: 1.1; }
+  .badge.recurring { background: #faf8f2; border-color: #ecdfb8; }
+  .badge.recurring .mo { color: #8a6d1a; }
+  .badge.recurring .day { font-size: .68rem; font-weight: 800; color: #6e5715; text-transform: uppercase; letter-spacing: .03em; line-height: 1.3; padding-top: 3px; }
+  .info { flex: 1; min-width: 0; }
+  .title { font-weight: 700; font-size: .98rem; margin: 0 0 2px; }
+  .meta { font-size: .85rem; color: #3d4551; margin: 0 0 3px; }
+  .action { font-size: .85rem; margin: 0; }
+  .tag { display: inline-block; font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: #fff; margin-right: 6px; vertical-align: 1px; }
+  .empty { font-size: .9rem; color: #5c5c5c; padding: 20px 0; }
+  .past-toggle { font-size: .82rem; margin: 16px 0 0; }
+  .past-toggle button { font-family: inherit; font-size: .82rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+  .session.past { opacity: .6; }
+</style>
+</head>
+<body>
+
+<div class="filters" role="group" aria-label="Filter sessions by program area" id="filters"></div>
+<p class="filter-note">Select a program area to filter the list. Past sessions are hidden automatically.</p>
+<div id="list" aria-live="polite"></div>
+<p class="past-toggle"><button type="button" id="pastBtn" aria-pressed="false">Show past sessions</button></p>
+
+<script>
+const PROGRAMS = {
+  bta:       { label: "BTA",             name: "Behavioral Threat Assessment", color: "#007834" },
+  safety:    { label: "Safety",          name: "Violent Intruder Drills",      color: "#4a4a4a" },
+  hhb:       { label: "HHB",             name: "Harassment, Hazing & Bullying",color: "#6e2c8e" },
+  mkv:       { label: "McKinney-Vento",  name: "McKinney-Vento",               color: "#00629b" },
+  r4500:     { label: "Rule 4500",       name: "Rule 4500",                    color: "#9c3d00" },
+  discipline:{ label: "Discipline",      name: "Exclusionary Discipline",      color: "#4a4a4a" },
+  foster:    { label: "Foster Care",     name: "Foster Care / DCF",            color: "#4d5d2c" },
+  seb:       { label: "Screening",       name: "Universal Screening",          color: "#8a1e41" }
+};
+
+const SESSIONS = [
+  { date: "2026-08-03", program: "bta", title: "Behavioral Threat Assessment Training Level I", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual \u00b7 BTA team members, administrators, school safety leads", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
+  { date: "2026-08-04", program: "bta", title: "Behavioral Threat Assessment Training Level II", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual \u00b7 BTA team leads or senior members, administrators", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
+  { date: "2026-08-10", program: "mkv", title: "McKinney-Vento 101", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators, coordinators, registrars", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
+  { date: "2026-08-11", program: "mkv", title: "McKinney-Vento Eligibility: Criteria and Determinations", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
+  { date: "2026-08-14", program: "mkv", title: "McKinney-Vento: School Selection and Best Interest Determinations", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Local homeless liaisons, administrators", action: "details", url: "https://education.vermont.gov/student-support/federal-programs/consolidated-federal-programs/education-homeless-children-and", linkText: "Education for Homeless Children and Youth" },
+  { date: "2026-08-20", program: "foster", title: "Educational Stability / Best Interest Determination", meta: "1:00 - 3:00 p.m. \u00b7 Virtual \u00b7 Also offered Aug 27 and Sep 17 \u00b7 Principals, special education administrators, DCF workers", action: "none", noteText: "No registration needed" },
+  { date: "2026-08-21", endDate: "2026-10-23", recurring: "Fridays", program: "mkv", title: "McKinney-Vento Office Hours", meta: "Fridays, 10:00 - 11:00 a.m., August 21 - October 23 \u00b7 Virtual \u00b7 Local homeless liaisons", action: "none", noteText: "No registration needed \u00b7 drop in any Friday" },
+  { date: "2026-08-27", program: "foster", title: "Educational Stability / Best Interest Determination (second offering)", meta: "11:00 a.m. - 12:00 p.m. \u00b7 Virtual", action: "none", noteText: "No registration needed" },
+  { date: "2026-09-09", program: "r4500", title: "Rule 4500 Overview", meta: "12:30 - 2:30 p.m. \u00b7 Virtual \u00b7 Administrators, special education directors, crisis response teams", action: "soon", noteText: "Registration coming summer 2026" },
+  { date: "2026-09-10", program: "seb", title: "Universal Screening 101: Building the Foundations of an SEB Data System", meta: "10:00 - 11:00 a.m. \u00b7 Virtual \u00b7 MTSS coordinators, administrators, counselors, teacher leaders", action: "details", url: "https://education.vermont.gov/sites/aoe/files/documents/edu-universal-screening-for-social-emotional-behavioral-needs-and-strengths-in-vt-schools.pdf", linkText: "Universal Screening guidance document" },
+  { date: "2026-09-16", endDate: "2027-05-19", recurring: "3rd Wed", program: "r4500", title: "Rule 4500 Guidance Series Office Hours", meta: "Third Wednesday monthly, 11:00 a.m. - 12:00 p.m., September - May \u00b7 Virtual", action: "none", noteText: "No registration needed \u00b7 drop in" },
+  { date: "2026-09-17", program: "foster", title: "Educational Stability / Best Interest Determination (third offering)", meta: "2:00 - 3:00 p.m. \u00b7 Virtual", action: "none", noteText: "No registration needed" },
+  { date: "2026-09-21", endDate: "2027-06-21", recurring: "3rd Mon", program: "hhb", title: "Harassment, Hazing and Bullying Office Hours", meta: "Third Monday monthly, 1:00 - 2:00 p.m., September - June \u00b7 Virtual \u00b7 School/district administrators and designees", action: "none", noteText: "No registration needed \u00b7 drop in" },
+  { date: "2026-10-05", program: "bta", title: "Behavioral Threat Assessment Training Level I (second offering)", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
+  { date: "2026-10-05", program: "discipline", title: "Exclusionary Discipline Guidance Overview Training", meta: "9:00 - 11:00 a.m. \u00b7 Virtual \u00b7 Second offering January 11, 2027 \u00b7 District/SU and school administrators", action: "soon", noteText: "Registration coming summer 2026" },
+  { date: "2026-10-06", program: "bta", title: "Behavioral Threat Assessment Training Level II (second offering)", meta: "8:00 a.m. - 3:00 p.m. \u00b7 Virtual", action: "reg", url: "https://safeandsound.swoogo.com/BTA-Annual-Training-2026", linkText: "Register on the Annual BTA Training page" },
+  { date: "2026-10-07", program: "hhb", title: "HHB Tool Kit Workshop: SU/SD, School, and Educator", meta: "9:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 School/district administrators, designees, educators", action: "reg", url: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=O5O0IK26PEOcAnDtzHVZxrCjEi6hGPtEnXtYvzFVNH9UQUhQUDFXTjhIV0NLSTc2RlVHUjZaRTVUUC4u&route=shorturl", linkText: "Register for the HHB Tool Kit Workshop" },
+  { date: "2026-10-08", program: "r4500", title: "Rule 4500 Administrator Training", meta: "9:00 - 10:30 a.m. \u00b7 Virtual \u00b7 Second offering January 7, 2027 \u00b7 Superintendents, directors, administrators", action: "soon", noteText: "Registration coming summer 2026" },
+  { date: "2026-10-13", program: "hhb", title: "HHB Tool Kit Workshop: Communities, Families, Students", meta: "9:00 a.m. - 12:00 p.m. \u00b7 Virtual \u00b7 Community members, families, students", action: "reg", url: "https://forms.cloud.microsoft/pages/responsepage.aspx?id=O5O0IK26PEOcAnDtzHVZxrCjEi6hGPtEnXtYvzFVNH9UQUhQUDFXTjhIV0NLSTc2RlVHUjZaRTVUUC4u&route=shorturl", linkText: "Register for the HHB Tool Kit Workshop" },
+  { date: "2026-10-19", program: "seb", title: "Universal Screening 201: Using Tier 1 SEB Data to Strengthen Classroom and School Climate", meta: "12:00 - 1:00 p.m. \u00b7 Virtual \u00b7 MTSS coordinators, administrators, counselors, teacher leaders", action: "details", url: "https://education.vermont.gov/sites/aoe/files/documents/edu-universal-screening-for-social-emotional-behavioral-needs-and-strengths-in-vt-schools.pdf", linkText: "Universal Screening guidance document" },
+  { date: "2027-01-07", program: "r4500", title: "Rule 4500 Administrator Training (second offering)", meta: "1:00 - 2:30 p.m. \u00b7 Virtual", action: "soon", noteText: "Registration coming summer 2026" },
+  { date: "2027-01-11", program: "discipline", title: "Exclusionary Discipline Guidance Overview Training (second offering)", meta: "1:00 - 3:00 p.m. \u00b7 Virtual", action: "soon", noteText: "Registration coming summer 2026" }
+];
+
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MONTH_ABBR = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+let activeFilter = "all";
+let showPast = false;
+
+function parseDate(s) { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); }
+function todayMidnight() { const t = new Date(); t.setHours(0,0,0,0); return t; }
+function isPast(s) {
+  const cutoff = s.endDate ? parseDate(s.endDate) : parseDate(s.date);
+  return cutoff < todayMidnight();
+}
+
+function buildFilters() {
+  const wrap = document.getElementById("filters");
+  const mkBtn = (key, text) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = text;
+    b.setAttribute("aria-pressed", key === activeFilter ? "true" : "false");
+    b.addEventListener("click", () => {
+      activeFilter = key;
+      wrap.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      render();
+    });
+    return b;
+  };
+  wrap.appendChild(mkBtn("all", "All programs"));
+  Object.entries(PROGRAMS).forEach(([key, p]) => wrap.appendChild(mkBtn(key, p.name)));
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  const visible = SESSIONS
+    .filter(s => activeFilter === "all" || s.program === activeFilter)
+    .filter(s => showPast || !isPast(s))
+    .sort((a,b) => a.date.localeCompare(b.date));
+
+  if (!visible.length) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "No upcoming sessions in this program area right now. Check back soon or select another program.";
+    list.appendChild(p);
+    return;
+  }
+
+  let lastMonth = "";
+  visible.forEach(s => {
+    const d = parseDate(s.date);
+    const monthKey = MONTH_NAMES[d.getMonth()] + " " + d.getFullYear();
+    if (monthKey !== lastMonth) {
+      const h = document.createElement("h2");
+      h.className = "month-label";
+      h.textContent = monthKey;
+      list.appendChild(h);
+      lastMonth = monthKey;
+    }
+
+    const row = document.createElement("div");
+    row.className = "session" + (isPast(s) ? " past" : "");
+
+    const badge = document.createElement("div");
+    badge.className = "badge" + (s.recurring ? " recurring" : "");
+    badge.setAttribute("aria-hidden", "true");
+    if (s.recurring) {
+      badge.innerHTML = '<span class="mo">' + s.recurring + '</span><span class="day">Series</span>';
+    } else {
+      badge.innerHTML = '<span class="mo">' + MONTH_ABBR[d.getMonth()] + '</span><span class="day">' + d.getDate() + '</span>';
+    }
+
+    const info = document.createElement("div");
+    info.className = "info";
+    const prog = PROGRAMS[s.program];
+
+    const title = document.createElement("p");
+    title.className = "title";
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.style.background = prog.color;
+    tag.textContent = prog.label;
+    title.appendChild(tag);
+    title.appendChild(document.createTextNode(s.title));
+
+    const meta = document.createElement("p");
+    meta.className = "meta";
+    const fullDate = MONTH_NAMES[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+    meta.textContent = (s.recurring ? "Starts " + fullDate : fullDate) + " \u00b7 " + s.meta;
+
+    const action = document.createElement("p");
+    action.className = "action";
+    if (s.action === "reg" || s.action === "details") {
+      const prefix = s.action === "details" ? "Details: " : "";
+      if (prefix) action.appendChild(document.createTextNode(prefix));
+      const a = document.createElement("a");
+      a.href = s.url;
+      a.target = "_top";
+      a.textContent = s.linkText;
+      action.appendChild(a);
+    } else {
+      action.textContent = s.noteText || "";
+    }
+
+    info.appendChild(title);
+    info.appendChild(meta);
+    info.appendChild(action);
+    row.appendChild(badge);
+    row.appendChild(info);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById("pastBtn").addEventListener("click", function() {
+  showPast = !showPast;
+  this.setAttribute("aria-pressed", showPast ? "true" : "false");
+  this.textContent = showPast ? "Hide past sessions" : "Show past sessions";
+  render();
+});
+
+buildFilters();
+render();
+</script>
+</body>
+</html>
