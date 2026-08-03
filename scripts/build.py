@@ -68,14 +68,14 @@ def text_of(component, key, default=""):
 
 def parse_description(desc: str):
     """Pull Audience:/Register:/Details: lines out of the event body."""
-    out = {"audience": "", "register": "", "details": ""}
+    out = {"audience": "", "register": "", "details": "", "category": ""}
     if not desc:
         return out
     # Outlook bodies arrive with literal \n sequences and carriage returns
     desc = desc.replace("\\n", "\n").replace("\r", "")
     for line in desc.split("\n"):
         line = line.strip()
-        m = re.match(r"(?i)^(audience|register|details)\s*:\s*(.+)$", line)
+        m = re.match(r"(?i)^(audience|register|details|category)\s*:\s*(.+)$", line)
         if m:
             out[m.group(1).lower()] = m.group(2).strip()
     return out
@@ -143,18 +143,20 @@ def main():
             d = dtstart
             time_str = "All day"
 
+        body = parse_description(text_of(ev, "DESCRIPTION"))
+
         cats = ev.get("CATEGORIES")
         if cats:
             try:
                 cat_list = cats.to_ical().decode("utf-8", "ignore").split(",")
             except AttributeError:
                 cat_list = [str(cats)]
-            category = cat_list[0].strip() or "General"
+            category = cat_list[0].strip() or ""
         else:
-            category = "General"
+            category = ""
+        if not category:
+            category = body["category"] or "General"
         pkey = program_key(category)
-
-        body = parse_description(text_of(ev, "DESCRIPTION"))
         location = text_of(ev, "LOCATION").strip()
         loc_str = "Virtual" if (not location or "virtual" in location.lower()
                                 or "teams" in location.lower() or "zoom" in location.lower()) else location
