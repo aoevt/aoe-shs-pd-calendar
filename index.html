@@ -6,41 +6,69 @@
 <title>Safe and Healthy Schools Professional Learning Calendar</title>
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "Public Sans", "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; background: #fff; line-height: 1.5; padding: 8px 4px; }
-  .wrap { max-width: 940px; }
+  html, body { background: transparent; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  body { margin: 0; font-family: "Public Sans", "Open Sans", "Segoe UI", Arial, sans-serif; color: #1b1b1b; line-height: 1.5; padding: 4px 2px 12px; }
+  .wrap { max-width: 960px; }
   a { color: #005ea2; }
   button { font-family: inherit; }
   button:focus-visible, a:focus-visible { outline: 3px solid #005ea2; outline-offset: 2px; }
 
   /* Toolbar */
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 0 0 10px; }
-  .view-toggle { display: flex; border: 1.5px solid #007834; border-radius: 6px; overflow: hidden; }
-  .view-toggle button { font-size: .85rem; font-weight: 700; padding: 7px 18px; border: none; background: #fff; color: #005a27; cursor: pointer; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin: 0 0 12px; }
+  .view-toggle { display: flex; border: 1.5px solid #007834; border-radius: 8px; overflow: hidden; background: #fff; }
+  .view-toggle button { font-size: .85rem; font-weight: 700; padding: 8px 20px; border: none; background: #fff; color: #005a27; cursor: pointer; }
   .view-toggle button + button { border-left: 1.5px solid #007834; }
   .view-toggle button[aria-pressed="true"] { background: #007834; color: #fff; }
   .month-nav { display: flex; gap: 6px; align-items: center; }
-  .month-nav button { font-size: .85rem; font-weight: 700; padding: 7px 12px; border: 1.5px solid #007834; border-radius: 6px; background: #fff; color: #005a27; cursor: pointer; }
+  .month-nav[hidden] { display: none; }
+  .month-nav button { font-size: .85rem; font-weight: 700; padding: 8px 14px; border: 1.5px solid #007834; border-radius: 8px; background: #fff; color: #005a27; cursor: pointer; }
   .month-nav button:hover { background: #eaf5ed; }
-  .month-title { font-size: 1.15rem; font-weight: 800; color: #003300; min-width: 172px; text-align: center; }
+  .month-title { font-size: 1.1rem; font-weight: 800; color: #003300; min-width: 168px; text-align: center; }
 
   /* Filter pills */
   .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
-  .filters button { font-size: .8rem; font-weight: 700; padding: 5px 13px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
+  .filters button { font-size: .8rem; font-weight: 700; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #007834; color: #005a27; background: #fff; cursor: pointer; }
   .filters button:hover { background: #eaf5ed; }
   .filters button[aria-pressed="true"] { background: #007834; color: #fff; }
-  .filter-note { font-size: .78rem; color: #5c5c5c; margin: 0 0 14px; }
+  .filter-note { font-size: .78rem; color: #4a4a4a; margin: 0 0 16px; }
 
-  /* Month grid */
+  /* Month labels */
+  .month-label { font-size: .8rem; font-weight: 800; letter-spacing: .1em; color: #005a27; text-transform: uppercase; margin: 24px 0 10px; border-bottom: 2px solid #F5B324; display: inline-block; padding-bottom: 2px; }
+  .month-label:first-of-type { margin-top: 4px; }
+
+  /* Session cards */
+  .session { display: flex; gap: 16px; padding: 16px 18px; background: #fff; border: 1px solid #e3e1dc; border-radius: 10px; box-shadow: 0 1px 2px rgba(27,27,27,.05); margin: 0 0 10px; transition: box-shadow .15s ease, border-color .15s ease; }
+  .session:hover { border-color: #cfe6d6; box-shadow: 0 2px 8px rgba(0,120,52,.10); }
+  .badge { flex: 0 0 56px; width: 56px; height: 56px; background: #eaf5ed; border: 1px solid #cfe6d6; border-radius: 8px; text-align: center; padding-top: 8px; }
+  .badge .mo { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .08em; color: #006b2f; text-transform: uppercase; line-height: 1.3; }
+  .badge .day { display: block; font-size: 1.3rem; font-weight: 800; color: #003300; line-height: 1.1; }
+  .info { flex: 1; min-width: 0; }
+  h3.title { font-weight: 700; font-size: 1rem; margin: 0 0 4px; color: #1b1b1b; font-family: inherit; }
+  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 4px; }
+  .action { font-size: .85rem; margin: 0; }
+  .tag { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 9px; border-radius: 999px; color: #fff; margin-right: 7px; vertical-align: 1px; }
+  .empty { font-size: .9rem; color: #4a4a4a; background: #fff; border: 1px dashed #d0cec8; border-radius: 10px; padding: 22px 20px; }
+  .past-toggle { font-size: .8rem; margin: 14px 0 0; }
+  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
+  .session.past { opacity: .65; }
+
+  /* Month grid card */
+  .cal-card { background: #fff; border: 1px solid #e3e1dc; border-radius: 10px; box-shadow: 0 1px 2px rgba(27,27,27,.05); overflow: hidden; }
   .cal { width: 100%; border-collapse: collapse; table-layout: fixed; }
   .cal caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .cal th { background: #003300; color: #fff; font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 8px 4px; border: 1px solid #003300; }
-  .cal td { border: 1px solid #D7D2CB; vertical-align: top; padding: 4px; height: 96px; background: #fff; }
-  .cal td.out { background: #f7f6f4; }
+  .cal th { background: #003300; color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 9px 4px; border: none; }
+  .cal td { border: 1px solid #eceae6; vertical-align: top; padding: 5px; height: 98px; background: #fff; }
+  .cal tr td:first-child { border-left: none; }
+  .cal tr td:last-child { border-right: none; }
+  .cal tbody tr:last-child td { border-bottom: none; }
+  .cal td.out { background: #faf9f7; }
   .cal td.today { background: #eaf5ed; box-shadow: inset 0 3px 0 #F5B324; }
-  .daynum { font-size: .8rem; font-weight: 700; color: #3d4551; margin: 0 0 3px; }
-  .cal td.out .daynum { color: #a9a9a9; }
+  .daynum { font-size: .78rem; font-weight: 700; color: #4a4a4a; margin: 0 0 4px; }
+  .today-flag { display: inline-block; font-size: .58rem; font-weight: 800; letter-spacing: .06em; color: #6e5715; text-transform: uppercase; margin-left: 5px; vertical-align: 1px; }
+  .cal td.out .daynum { color: #b0aea9; }
   .cal td.today .daynum { color: #003300; }
-  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.25; color: #fff; border: none; border-radius: 3px; padding: 3px 6px; margin: 0 0 3px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chip { display: block; width: 100%; text-align: left; font-size: .7rem; font-weight: 700; line-height: 1.25; color: #fff; border: none; border-radius: 4px; padding: 4px 8px; margin: 0 0 4px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .chip:hover { filter: brightness(1.12); }
   .more-link { font-size: .68rem; font-weight: 700; color: #005ea2; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; }
   .dot-row { display: flex; flex-wrap: wrap; gap: 3px; }
@@ -48,35 +76,24 @@
   .day-btn { display: block; width: 100%; background: none; border: none; padding: 0; text-align: left; cursor: pointer; }
 
   /* Detail panel */
-  .detail { border-left: 4px solid #007834; background: #eaf5ed; padding: 14px 18px; margin: 14px 0 0; }
+  .detail { border-left: 4px solid #007834; background: #eaf5ed; border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 14px 0 0; }
   .detail[hidden] { display: none; }
   .detail h2 { margin: 0 0 4px; font-size: 1rem; color: #003300; }
   .detail p { margin: 3px 0; font-size: .88rem; }
   .detail .close { float: right; font-size: .78rem; font-weight: 700; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
-
-  /* List view */
-  .month-label { font-size: .8rem; font-weight: 800; letter-spacing: .1em; color: #006b2f; text-transform: uppercase; margin: 20px 0 2px; border-bottom: 2px solid #F5B324; display: inline-block; padding-bottom: 2px; }
-  .session { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid #e6e6e6; }
-  .badge { flex: 0 0 56px; width: 56px; height: 56px; background: #eaf5ed; border: 1px solid #cfe6d6; border-radius: 6px; text-align: center; padding-top: 8px; }
-  .badge .mo { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .08em; color: #006b2f; text-transform: uppercase; line-height: 1.3; }
-  .badge .day { display: block; font-size: 1.3rem; font-weight: 800; color: #003300; line-height: 1.1; }
-  .info { flex: 1; min-width: 0; }
-  .title { font-weight: 700; font-size: .96rem; margin: 0 0 2px; }
-  .meta { font-size: .84rem; color: #3d4551; margin: 0 0 3px; }
-  .action { font-size: .84rem; margin: 0; }
-  .tag { display: inline-block; font-size: .65rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: #fff; margin-right: 6px; vertical-align: 1px; }
-  .empty { font-size: .9rem; color: #5c5c5c; padding: 18px 0; }
-  .past-toggle { font-size: .8rem; margin: 14px 0 0; }
-  .past-toggle button { font-size: .8rem; background: none; border: none; color: #005ea2; text-decoration: underline; cursor: pointer; padding: 0; }
 
   @media (max-width: 640px) {
     .cal td { height: 62px; }
     .chip { display: none; }
     .more-link { display: none; }
     .toolbar { justify-content: flex-start; }
+    .session { padding: 12px; gap: 12px; }
   }
   @media (min-width: 641px) {
     .dot-row, .day-btn { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .session { transition: none; }
   }
 </style>
 </head>
@@ -105,13 +122,16 @@
   </div>
 
   <div id="monthView" hidden>
+    <div class="cal-card">
     <table class="cal" id="calTable">
       <caption id="calCaption"></caption>
       <thead>
-        <tr><th scope="col"><span aria-hidden="true">Sun</span><span class="sr">day</span></th><th scope="col">Mon</th><th scope="col">Tue</th><th scope="col">Wed</th><th scope="col">Thu</th><th scope="col">Fri</th><th scope="col">Sat</th></tr>
+        <tr><th scope="col"><span aria-hidden="true">Sun</span><span class="sr-only">Sunday</span></th><th scope="col"><span aria-hidden="true">Mon</span><span class="sr-only">Monday</span></th><th scope="col"><span aria-hidden="true">Tue</span><span class="sr-only">Tuesday</span></th><th scope="col"><span aria-hidden="true">Wed</span><span class="sr-only">Wednesday</span></th><th scope="col"><span aria-hidden="true">Thu</span><span class="sr-only">Thursday</span></th><th scope="col"><span aria-hidden="true">Fri</span><span class="sr-only">Friday</span></th><th scope="col"><span aria-hidden="true">Sat</span><span class="sr-only">Saturday</span></th></tr>
       </thead>
       <tbody id="calBody"></tbody>
     </table>
+    </div>
+    <p class="empty" id="monthEmpty" role="status" hidden style="margin-top:10px;"></p>
     <div class="detail" id="detail" hidden tabindex="-1" role="region" aria-label="Session details">
       <button type="button" class="close" id="detailClose">Close</button>
       <div id="detailBody"></div>
@@ -177,7 +197,7 @@ function renderList() {
     const prog = PROGRAMS[s.program];
     row.innerHTML =
       '<div class="badge" aria-hidden="true"><span class="mo">' + MONTH_ABBR[d.getMonth()] + '</span><span class="day">' + d.getDate() + '</span></div>' +
-      '<div class="info"><p class="title"><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</p>' +
+      '<div class="info"><h3 class="title"><span class="tag" style="background:' + prog.color + '">' + esc(prog.label) + '</span>' + esc(s.title) + '</h3>' +
       '<p class="meta">' + esc(fullDate(d)) + (s.meta ? " \u00b7 " + esc(s.meta) : "") + '</p>' +
       actionHTML(s) + '</div>';
     list.appendChild(row);
@@ -202,7 +222,20 @@ function renderMonth() {
   document.getElementById("calCaption").textContent = "Sessions for " + MONTH_NAMES[m] + " " + y;
 
   const byDate = {};
-  filtered().forEach(s => { (byDate[s.date] = byDate[s.date] || []).push(s); });
+  let monthCount = 0;
+  filtered().forEach(s => {
+    (byDate[s.date] = byDate[s.date] || []).push(s);
+    const sd = parseDate(s.date);
+    if (sd.getFullYear() === y && sd.getMonth() === m) monthCount++;
+  });
+  const emptyEl = document.getElementById("monthEmpty");
+  if (monthCount === 0) {
+    const progName = activeFilter === "all" ? "" : PROGRAMS[activeFilter].name + " ";
+    emptyEl.textContent = "No " + progName + "sessions in " + MONTH_NAMES[m] + " " + y + ". Use Next to look ahead, or choose another program area.";
+    emptyEl.hidden = false;
+  } else {
+    emptyEl.hidden = true;
+  }
 
   const body = document.getElementById("calBody");
   body.innerHTML = "";
@@ -224,6 +257,12 @@ function renderMonth() {
       const num = document.createElement("p");
       num.className = "daynum";
       num.textContent = cellDate.getDate();
+      if (inMonth && cellDate.getTime() === today.getTime()) {
+        const flag = document.createElement("span");
+        flag.className = "today-flag";
+        flag.textContent = "Today";
+        num.appendChild(flag);
+      }
       td.appendChild(num);
 
       if (inMonth) {
@@ -308,6 +347,9 @@ document.getElementById("prevBtn").addEventListener("click", () => { current.set
 document.getElementById("nextBtn").addEventListener("click", () => { current.setMonth(current.getMonth()+1); document.getElementById("detail").hidden = true; renderMonth(); });
 document.getElementById("todayBtn").addEventListener("click", () => { current = new Date(); current.setDate(1); current.setHours(0,0,0,0); document.getElementById("detail").hidden = true; renderMonth(); });
 document.getElementById("detailClose").addEventListener("click", () => { document.getElementById("detail").hidden = true; });
+document.getElementById("detail").addEventListener("keydown", (e) => {
+  if (e.key === "Escape") document.getElementById("detail").hidden = true;
+});
 document.getElementById("pastBtn").addEventListener("click", function() {
   showPast = !showPast;
   this.setAttribute("aria-pressed", showPast ? "true" : "false");
@@ -315,8 +357,13 @@ document.getElementById("pastBtn").addEventListener("click", function() {
   renderList();
 });
 
-buildFilters();
-setView("list");
+if (typeof SESSIONS === "undefined" || typeof PROGRAMS === "undefined") {
+  document.querySelector(".wrap").innerHTML =
+    '<p class="empty" role="alert">The training calendar could not load right now. Please refresh the page, or contact the Safe and Healthy Schools Division for the current schedule.</p>';
+} else {
+  buildFilters();
+  setView("list");
+}
 </script>
 </body>
 </html>
